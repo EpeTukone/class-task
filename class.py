@@ -139,8 +139,6 @@ class Money(object):
 
 
 if __name__ == "__main__":
-#    ses = Session(1)
-#    print ses.start()
 
 ####### create a new player ######
     player = Player('mail.@tut.by', '12WW34e', 'drednout')
