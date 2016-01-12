@@ -30,13 +30,13 @@ class Player(object):
                 result = 'authentication is successful'
                 session_id += 1
                 session = Session(session_id)
-                temp = {session_id: [session.start(), None]}
+                temp = {session_id: [str(session.start()), None]}
                 self.session.append(temp)
             elif Log_pass.get(email) == password and session_id != 0 and (self.session[session_id - 1]).get(session_id)[1] != None:
                 result = 'authentication is successful'
                 session_id += 1
                 session = Session(session_id)
-                temp = {session_id: [session.start(), None]}
+                temp = {session_id: [str(session.start()), None]}
                 self.session.append(temp)
             elif Log_pass.get(email) == password and session_id != 0 and (self.session[session_id - 1]).get(session_id)[1] == None:
                result = 'authentication has already been done\nauthentication failed'
@@ -47,7 +47,7 @@ class Player(object):
     def log_out(self, email):
         global session_id
         global session
-        (self.session[session_id - 1]).get(session_id)[1] = session.stop()
+        (self.session[session_id - 1]).get(session_id)[1] = str(session.stop())
         result = 'log out has done'
         return result
 
@@ -169,11 +169,11 @@ if __name__ == "__main__":
 ###### log out ######
     print 'log out:\n', player.log_out('mail.@tut.by'), '\n', player, '\n', '-----------------------------------------------------------------------'
 
+###### save json.dump ######
+    name_of_player = player.as_dict().get('name')
+    player.save(open(str(name_of_player + '.txt'), 'w'))
+    print 'iformation was save into', (name_of_player + '.txt')
 
 ###### authentication number two, try again ######
     print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n', '-----------------------------------------------------------------------'
 
-###### save json.dump ######
-    name_of_player = player.as_dict().get('name')
-    player.save(open(str(name_of_player + '.txt'), 'w'))
-    print (name_of_player + '.txt')
