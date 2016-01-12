@@ -1,6 +1,7 @@
 import json
 import datetime
 
+
 GOLD = 'Gold'
 SILVER = 'Silver'
 ###### database ######
@@ -45,7 +46,6 @@ class Player(object):
 
 
     def log_out(self, email):
-        global session_id
         global session
         (self.session[session_id - 1]).get(session_id)[1] = str(session.stop())
         result = 'log out has done'
@@ -166,13 +166,14 @@ if __name__ == "__main__":
 ###### authentication number two ######
     print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n', '-----------------------------------------------------------------------'
 
+    print (input())
 ###### log out ######
     print 'log out:\n', player.log_out('mail.@tut.by'), '\n', player, '\n', '-----------------------------------------------------------------------'
 
 ###### save json.dump ######
     name_of_player = player.as_dict().get('name')
     player.save(open(str(name_of_player + '.txt'), 'w'))
-    print 'iformation was save into', (name_of_player + '.txt')
+    print 'save json.dump:''\n','iformation was save into', (name_of_player + '.txt'), '\n', '-----------------------------------------------------------------'
 
 ###### authentication number two, try again ######
     print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n', '-----------------------------------------------------------------------'
