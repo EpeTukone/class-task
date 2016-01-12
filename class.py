@@ -6,7 +6,6 @@ GOLD = 'Gold'
 SILVER = 'Silver'
 ###### database ######
 Log_pass = {'mail.@tut.by': '12WW34e'}
-session_id = 0
 session = None
 
 class Player(object):
@@ -17,6 +16,7 @@ class Player(object):
         self.name = name
         self.session = []
         self.wallet = {}
+        self.session_id = 0
 
 
     def log_in(self, email, password):
@@ -27,19 +27,19 @@ class Player(object):
         if email in Log_pass:
             if Log_pass.get(email) != password:
                 result = 'wrong password'
-            if Log_pass.get(email) == password and session_id == 0:
+            if Log_pass.get(email) == password and self.session_id == 0:
                 result = 'authentication is successful'
-                session_id += 1
-                session = Session(session_id)
-                temp = {session_id: [str(session.start()), None]}
+                self.session_id += 1
+                session = Session(self.session_id)
+                temp = {self.session_id: [str(session.start()), None]}
                 self.session.append(temp)
-            elif Log_pass.get(email) == password and session_id != 0 and (self.session[session_id - 1]).get(session_id)[1] != None:
+            elif Log_pass.get(email) == password and self.session_id != 0 and (self.session[self.session_id - 1]).get(self.session_id)[1] != None:
                 result = 'authentication is successful'
-                session_id += 1
-                session = Session(session_id)
-                temp = {session_id: [str(session.start()), None]}
+                self.session_id += 1
+                session = Session(self.session_id)
+                temp = {self.session_id: [str(session.start()), None]}
                 self.session.append(temp)
-            elif Log_pass.get(email) == password and session_id != 0 and (self.session[session_id - 1]).get(session_id)[1] == None:
+            elif Log_pass.get(email) == password and self.session_id != 0 and (self.session[self.session_id - 1]).get(self.session_id)[1] == None:
                result = 'authentication has already been done\nauthentication failed'
 
         return result
@@ -47,7 +47,7 @@ class Player(object):
 
     def log_out(self, email):
         global session
-        (self.session[session_id - 1]).get(session_id)[1] = str(session.stop())
+        (self.session[self.session_id - 1]).get(self.session_id)[1] = str(session.stop())
         result = 'log out has done'
         return result
 
@@ -142,37 +142,45 @@ if __name__ == "__main__":
 
 ####### create a new player ######
     player = Player('mail.@tut.by', '12WW34e', 'drednout')
-    print 'Create new player:\n', player, '\n', '-----------------------------------------------------------------------'
+    print 'Create new player:\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### authentication ######
-    print 'authentication:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n',player, '\n', '-----------------------------------------------------------------------'
+    print 'authentication:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### add money for a player with new account ######
     player.init_money()
-    print 'Add money for a player with new account:\n', player, '\n', '-----------------------------------------------------------------------'
+    print 'Add money for a player with new account:\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### add money to player ######
     player.money_add(GOLD, 200)
     player.money_add(SILVER, 2000)
-    print 'Add money to player:\n', player, '\n', '-----------------------------------------------------------------------'
+    print 'Add money to player:\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### remove money from player ######
     player.money_remove(GOLD, 50)
     player.money_remove(SILVER, 500)
-    print 'Remove money from player:\n', player, '\n', '-----------------------------------------------------------------------'
+    print 'Remove money from player:\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### authentication number two ######
-    print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n', '-----------------------------------------------------------------------'
+    print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
-    print (input())
-###### log out ######
-    print 'log out:\n', player.log_out('mail.@tut.by'), '\n', player, '\n', '-----------------------------------------------------------------------'
+  ###### log out ######
+    print 'log out:\n', player.log_out('mail.@tut.by'), '\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### save json.dump ######
     name_of_player = player.as_dict().get('name')
     player.save(open(str(name_of_player + '.txt'), 'w'))
-    print 'save json.dump:''\n','iformation was save into', (name_of_player + '.txt'), '\n', '-----------------------------------------------------------------'
+    print 'save json.dump:''\n','iformation was save into', (name_of_player + '.txt'), '\n',\
+    '-----------------------------------------------------------------------'
 
 ###### authentication number two, try again ######
-    print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n', '-----------------------------------------------------------------------'
+    print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n',\
+    '-----------------------------------------------------------------------'
 
