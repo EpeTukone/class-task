@@ -46,7 +46,7 @@ class Player(object):
                 self.session.append(temp)
             elif Log_pass.get(email) == password and self.session_id != 0 and\
                             (self.session[self.session_id - 1]).get(self.session_id)[1] == None:
-               result = 'authentication has already been done\nauthentication failed'
+                result = 'authentication has already been done\nauthentication failed'
 
         return result
 
