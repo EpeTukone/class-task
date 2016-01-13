@@ -5,7 +5,8 @@ import datetime
 GOLD = 'Gold'
 SILVER = 'Silver'
 ###### database ######
-Log_pass = {'mail.@tut.by': '12WW34e'}
+Log_pass = {'mail.@tut.by': '12WW34e', 'moder@mail.ru': '1234', 'adminko@gmail.com': 'A1234'}
+Progress_dict = {1: "super pihar'", 2: "geniy randoma"}
 session = None
 
 class Player(object):
@@ -17,14 +18,13 @@ class Player(object):
         self.session = []
         self.wallet = {}
         self.progress = {}
-        self.session_id = 0
+        self.session_id = 0   # counter of session
         self.type = 1         # 1 - player, 2 - moderator, 3 - administrator
         self.ban_status = 0   # 0 - player isn't banned, 1 - player is banned
         self.mute = 0         # 0 - player's chat and microphone isn't off, 1 - player's chat and micro is off
 
 
     def log_in(self, email, password):
-        global session_id
         global session
         if email not in Log_pass:
             result = 'wrong email'
@@ -47,7 +47,6 @@ class Player(object):
             elif Log_pass.get(email) == password and self.session_id != 0 and\
                             (self.session[self.session_id - 1]).get(self.session_id)[1] == None:
                 result = 'authentication has already been done\nauthentication failed'
-
         return result
 
 
@@ -85,6 +84,19 @@ class Player(object):
             self.wallet[SILVER] = quantity_money
 
 
+    def add_progress(self, name_of_progress):
+        new_progress = Progress(name_of_progress)
+        self.progress[len(self.progress) + 1] = [name_of_progress, str(new_progress.date)]
+
+
+
+
+
+
+
+
+
+
     def as_dict(self):
         dict_ = {
             'email': self.email,
@@ -97,6 +109,7 @@ class Player(object):
             'session': self.session
         }
         return dict_
+
 
     def save(self, file_object):
         json.dump(self.as_dict(), file_object)
@@ -133,22 +146,29 @@ class Session(object):
 
 
 class Money(object):
-    def __init__(self, name_of_money, counter):
+    def __init__(self, name_of_money, quantity):
         self.name_of_money = name_of_money
-        self.counter = counter
+        self.quantity = quantity
 
 
     def as_dict(self):
         dict_ = {
-            str(self.name_of_money): self.counter
+            str(self.name_of_money): self.quantity
         }
         return dict_
 
 #    def __str__(self):
-#        return 'name of money: {}, quantity: {}'.format(self.name_of_money, self.counter)
+#        return 'name of money: {}, quantity: {}'.format(self.name_of_money, self.quantity)
 
-#class Progress(object):
-#    def __int__(self, name, date, number):
+class Progress(object):
+    def __int__(self, name):
+        self.name = name
+        self.date = None
+
+
+    def date(self):
+        self.date = datetime.datetime.now()
+        return self.date
 
 
 
@@ -180,6 +200,12 @@ if __name__ == "__main__":
     player.money_remove(GOLD, 50)
     player.money_remove(SILVER, 500)
     print 'Remove money from player:\n', player, '\n',\
+    '-----------------------------------------------------------------------'
+
+###### add a progress ######
+ #   player.add_progress(Progress_dict.get(1))
+    player.add_progress('er')
+    print 'add a progress:\n', player, '\n',\
     '-----------------------------------------------------------------------'
 
 ###### authentication number two ######
