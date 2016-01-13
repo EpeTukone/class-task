@@ -16,7 +16,11 @@ class Player(object):
         self.name = name
         self.session = []
         self.wallet = {}
+        self.progress = {}
         self.session_id = 0
+        self.type = 1         # 1 - player, 2 - moderator, 3 - administrator
+        self.ban_status = 0   # 0 - player isn't banned, 1 - player is banned
+        self.mute = 0         # 0 - player's chat and microphone isn't off, 1 - player's chat and micro is off
 
 
     def log_in(self, email, password):
@@ -33,13 +37,15 @@ class Player(object):
                 session = Session(self.session_id)
                 temp = {self.session_id: [str(session.start()), None]}
                 self.session.append(temp)
-            elif Log_pass.get(email) == password and self.session_id != 0 and (self.session[self.session_id - 1]).get(self.session_id)[1] != None:
+            elif Log_pass.get(email) == password and self.session_id != 0 and \
+                            (self.session[self.session_id - 1]).get(self.session_id)[1] != None:
                 result = 'authentication is successful'
                 self.session_id += 1
                 session = Session(self.session_id)
                 temp = {self.session_id: [str(session.start()), None]}
                 self.session.append(temp)
-            elif Log_pass.get(email) == password and self.session_id != 0 and (self.session[self.session_id - 1]).get(self.session_id)[1] == None:
+            elif Log_pass.get(email) == password and self.session_id != 0 and\
+                            (self.session[self.session_id - 1]).get(self.session_id)[1] == None:
                result = 'authentication has already been done\nauthentication failed'
 
         return result
@@ -84,6 +90,9 @@ class Player(object):
             'email': self.email,
             'password': self.password,
             'name': self.name,
+            'account type': self.type,
+            'ban status': self.ban_status,
+            'mute status': self.mute,
             'wallet': self.wallet,
             'session': self.session
         }
@@ -94,8 +103,10 @@ class Player(object):
 
 
     def __str__(self):
-        format_str = 'email= "{}", password= "{}", name= "{}",\nwallet= "{}", session= "{}"'
-        return format_str.format(self.email, self.password, self.name, self.wallet, self.session)
+        format_str = 'email= "{}", password= "{}", name= "{}",\naccount type= "{}", ban status= "{}",' \
+                     ' mute status= "{}",\nwallet= "{}",\nprogress= {}\nsession= "{}"'
+        return format_str.format(self.email, self.password, self.name, self.type,
+                                 self.ban_status, self.mute, self.wallet, self.progress, self.session)
 
 
 
@@ -136,6 +147,11 @@ class Money(object):
 #    def __str__(self):
 #        return 'name of money: {}, quantity: {}'.format(self.name_of_money, self.counter)
 
+#class Progress(object):
+#    def __int__(self, name, date, number):
+
+
+
 
 
 if __name__ == "__main__":
@@ -170,14 +186,14 @@ if __name__ == "__main__":
     print 'authentication number two:\n', player.log_in('mail.@tut.by', '12WW34e'), '\n', player, '\n',\
     '-----------------------------------------------------------------------'
 
-  ###### log out ######
+###### log out ######
     print 'log out:\n', player.log_out('mail.@tut.by'), '\n', player, '\n',\
     '-----------------------------------------------------------------------'
 
 ###### save json.dump ######
     name_of_player = player.as_dict().get('name')
     player.save(open(str(name_of_player + '.txt'), 'w'))
-    print 'save json.dump:''\n','iformation was save into', (name_of_player + '.txt'), '\n',\
+    print 'save json.dump:\niformation was save into', (name_of_player + '.txt'), '\n',\
     '-----------------------------------------------------------------------'
 
 ###### authentication number two, try again ######
